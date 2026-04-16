@@ -29,7 +29,6 @@ yarn-error.log*
 .DS_Store
 
 # OS
-.DS_Store
 Thumbs.db
 
 # Vercel
@@ -41,6 +40,4 @@ Thumbs.db
 *.sqlite3
 
 # Misc
-node_modules
 .cache
-.env*.local

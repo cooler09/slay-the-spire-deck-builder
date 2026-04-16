@@ -1,14 +1,21 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'path'
 
-dotenv.config()
+const __dirname = dirname(fileURLToPath(import.meta.url))
+dotenv.config({ path: resolve(__dirname, '../../.env.local') })
 
 const app = express()
 const PORT = process.env.API_PORT || 3001
 
 // Middleware
-app.use(cors())
+const allowedOrigins = process.env.NODE_ENV === 'production'
+    ? [process.env.FRONTEND_URL].filter(Boolean)
+    : ['http://localhost:3000', 'http://localhost:5173']
+
+app.use(cors({ origin: allowedOrigins }))
 app.use(express.json())
 
 // Health check endpoint
@@ -44,7 +51,7 @@ app.use((req, res) => {
 })
 
 // Error handler
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err, req, res, next) => {
     console.error('Error:', err)
     res.status(500).json({
         success: false,
