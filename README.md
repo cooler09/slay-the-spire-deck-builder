@@ -29,7 +29,7 @@ copilot-skills/
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 20+ 
 - npm or yarn
 - Git
 

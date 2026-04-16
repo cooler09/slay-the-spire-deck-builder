@@ -4,7 +4,7 @@ Complete walkthrough for setting up the Slay the Spire Deck Builder with Vercel,
 
 ## Prerequisites
 
-- **Node.js**: 18+ ([download](https://nodejs.org/))
+- **Node.js**: 20+ ([download](https://nodejs.org/))
 - **Git**: Latest version ([download](https://git-scm.com/))
 - **GitHub Account**: ([github.com](https://github.com))
 - **Code Editor**: VS Code recommended
@@ -55,19 +55,25 @@ git push -u origin main
 3. In project root, create `.env.local`:
 
 ```bash
-# Supabase
+# Supabase (backend)
 SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_KEY=your-anon-key-here
+SUPABASE_ANON_KEY=your-anon-key-here
 SUPABASE_SERVICE_ROLE_KEY=your-service-key-here
 
-# Frontend (Vite)
+# Frontend (Vite — prefix with VITE_ to expose to browser)
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
 VITE_API_URL=http://localhost:3001
+VITE_ENV=development
+
+# Backend
+NODE_ENV=development
+API_PORT=3001
+FRONTEND_URL=https://your-project.vercel.app
 ```
 
 4. Find keys in **Settings** → **API**:
-   - `anon public` key (put in `SUPABASE_KEY`)
+   - `anon public` key (put in `SUPABASE_ANON_KEY` and `VITE_SUPABASE_ANON_KEY`)
    - `service_role secret` key (put in `SUPABASE_SERVICE_ROLE_KEY`)
 
 ## Step 3: Setup Vercel (Free Hosting)
@@ -93,6 +99,7 @@ VITE_API_URL=http://localhost:3001
    VITE_SUPABASE_URL=your-supabase-url
    VITE_SUPABASE_ANON_KEY=your-anon-key
    VITE_API_URL=https://your-vercel-api-domain.vercel.app
+   VITE_ENV=production
    ```
 5. Click **"Deploy"**
 
@@ -101,7 +108,14 @@ VITE_API_URL=http://localhost:3001
 1. After frontend deploys, go back to Vercel
 2. Create new project from same repo
 3. **Root Directory**: `./backend`
-4. Same **Environment Variables**
+4. **Environment Variables**:
+   ```
+   SUPABASE_URL=your-supabase-url
+   SUPABASE_ANON_KEY=your-anon-key
+   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+   NODE_ENV=production
+   FRONTEND_URL=https://your-frontend.vercel.app
+   ```
 5. Click **"Deploy"**
 6. Copy the deployment URL (e.g., `https://api-slay-the-spire.vercel.app`)
 
@@ -166,7 +180,7 @@ Edit both with your Supabase credentials.
 ```bash
 cd frontend
 npm run dev
-# Opens at http://localhost:5173
+# Opens at http://localhost:3000
 ```
 
 **Terminal 2 - Backend:**
@@ -179,7 +193,7 @@ npm run dev
 ## Step 6: Verify Everything Works
 
 ### 6.1 Test Frontend
-- Visit `http://localhost:5173`
+- Visit `http://localhost:3000`
 - See Deck Builder homepage
 - Check browser console for errors
 
@@ -225,7 +239,7 @@ git push origin main
 ```
 Error: Failed to connect to database
 ```
-- Check `.env.local` has correct URL and key
+- Check `.env.local` has correct `SUPABASE_URL` and `SUPABASE_ANON_KEY`
 - Verify IP whitelist in Supabase (usually auto-configured)
 - Try restarting the development server
 
@@ -242,8 +256,8 @@ Error: Failed to connect to database
 
 ### Port Already in Use
 ```bash
-# Frontend (5173)
-lsof -i :5173 | grep LISTEN | awk '{print $2}' | xargs kill -9
+# Frontend (3000)
+lsof -i :3000 | grep LISTEN | awk '{print $2}' | xargs kill -9
 
 # Backend (3001)
 lsof -i :3001 | grep LISTEN | awk '{print $2}' | xargs kill -9
