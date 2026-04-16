@@ -1,0 +1,24 @@
+{
+  "name": "slay-the-spire-deck-builder",
+  "version": "1.0.0",
+  "description": "A deck builder application for Slay the Spire",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=frontend & npm run dev --workspace=backend",
+    "build": "npm run build --workspace=frontend && npm run build --workspace=backend",
+    "start": "npm start --workspace=frontend",
+    "lint": "npm run lint --workspace=frontend && npm run lint --workspace=backend",
+    "test": "npm test --workspace=frontend && npm test --workspace=backend"
+  },
+  "keywords": [
+    "slay-the-spire",
+    "deck-builder",
+    "react"
+  ],
+  "author": "",
+  "license": "MIT"
+}
