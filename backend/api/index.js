@@ -60,7 +60,13 @@ app.use((err, req, res, next) => {
     })
 })
 
-app.listen(PORT, () => {
-    console.log(`🚀 API running at http://localhost:${PORT}`)
-    console.log(`📝 Health check: http://localhost:${PORT}/api/health`)
-})
+// Export for Vercel serverless
+export default app
+
+// Local dev server — only runs when executed directly, not when imported by Vercel
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`🚀 API running at http://localhost:${PORT}`)
+        console.log(`📝 Health check: http://localhost:${PORT}/api/health`)
+    })
+}
